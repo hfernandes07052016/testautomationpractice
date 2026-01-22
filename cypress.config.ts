@@ -1,16 +1,21 @@
 import { defineConfig } from "cypress";
-// import allureWriter from "cypress-allure-plugin/writer";
 
 export default defineConfig({
   e2e: {
     baseUrl: "https://testautomationpractice.blogspot.com",
     setupNodeEvents(on, config) {
-      // allureWriter(on, config);
+      require("cypress-mochawesome-reporter/plugin")(on);
       return config;
     },
-    viewportWidth: 1366,
-    viewportHeight: 768,
-    video: false,
-    screenshotOnRunFailure: true,
+  },
+
+  reporter: "cypress-mochawesome-reporter",
+  reporterOptions: {
+    reportDir: "cypress/reports/mochawesome",
+    overwrite: false,
+    html: false,
+    json: true,
+    embeddedScreenshots: true,
+    inlineAssets: true,
   },
 });

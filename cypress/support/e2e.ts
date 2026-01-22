@@ -17,3 +17,4 @@
 import './commands'
 // import "cypress-allure-plugin/support";
 import "@4tw/cypress-drag-drop";
+import "cypress-mochawesome-reporter/register";
