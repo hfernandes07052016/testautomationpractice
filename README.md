@@ -140,65 +140,6 @@ npm i -D mochawesome mochawesome-merge mochawesome-report-generator
 npm i -D cypress-mochawesome-reporter
 ```
 
-### ✅ Configuração do Cypress
-
-#### `cypress.config.ts`
-
-Adicione o reporter e o plugin:
-
-```ts
-import { defineConfig } from "cypress";
-
-export default defineConfig({
-  e2e: {
-    baseUrl: "https://testautomationpractice.blogspot.com",
-    setupNodeEvents(on, config) {
-      require("cypress-mochawesome-reporter/plugin")(on);
-      return config;
-    },
-  },
-
-  reporter: "cypress-mochawesome-reporter",
-  reporterOptions: {
-    reportDir: "cypress/reports/mochawesome",
-    overwrite: false,
-    html: false,
-    json: true,
-    embeddedScreenshots: true,
-    inlineAssets: true,
-  },
-});
-```
-
-#### `cypress/support/e2e.ts`
-
-Adicione o register do reporter:
-
-```ts
-import "cypress-mochawesome-reporter/register";
-```
-
-> Se você já tiver outros imports (ex.: drag-drop), mantenha todos no mesmo arquivo.
-
----
-
-### ✅ Scripts no `package.json`
-
-Adicione estes scripts para **juntar os JSONs** e gerar **um HTML único**:
-
-```json
-{
-  "scripts": {
-    "cy:run": "cypress run",
-    "report:mocha:merge": "mochawesome-merge cypress/reports/mochawesome/*.json > cypress/reports/mochawesome/mochawesome.json",
-    "report:mocha:html": "marge cypress/reports/mochawesome/mochawesome.json -f mochawesome -o cypress/reports/mochawesome/html",
-    "report:mocha": "npm run report:mocha:merge && npm run report:mocha:html"
-  }
-}
-```
-
----
-
 ### ▶️ Gerando o relatório
 
 1) Rode os testes:
@@ -218,7 +159,6 @@ O arquivo final ficará em:
 ```
 cypress/reports/mochawesome/html/mochawesome.html
 ```
-
 ---
 
 ### 📌 Recomendações
