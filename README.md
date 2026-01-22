@@ -1,6 +1,6 @@
 # Cypress E2E - TestAutomationPractice (TypeScript)
 
-Projeto de automação E2E utilizando **Cypress + TypeScript** para testar o site:  
+Projeto de automação E2E utilizando **Cypress + TypeScript** para testar o site:
 https://testautomationpractice.blogspot.com/
 
 ---
@@ -108,7 +108,7 @@ README.md
 ---
 
 ### 2) Date Picker
-- Selecionar uma data específica no campo **Date Picker**  
+- Selecionar uma data específica no campo **Date Picker**
   Exemplo: dia **25 do próximo mês**
 
 ---
@@ -120,7 +120,7 @@ README.md
 
 ⚠️ **Status atual:** este cenário está **falhando**, pois o valor exibido na tabela do site está **diferente de "$10.50"** no momento da execução.
 
-✅ O teste está correto, porém a massa de dados do site está diferente do valor esperado.  
+✅ O teste está correto, porém a massa de dados do site está diferente do valor esperado.
 Para corrigir, atualize o valor esperado no teste com o preço atual exibido na página.
 
 ---
@@ -128,6 +128,106 @@ Para corrigir, atualize o valor esperado no teste com o preço atual exibido na 
 ### 4) Draggable / Droppable
 - Arrastar o elemento **Draggable** para dentro da área **Droppable**
 - Validar se o texto foi alterado para **"Dropped!"**
+
+## 📊 Relatório com Mochawesome
+
+Este projeto pode gerar relatório HTML utilizando **Mochawesome** via `cypress-mochawesome-reporter`.
+
+### ✅ Instalação das dependências
+
+```bash
+npm i -D mochawesome mochawesome-merge mochawesome-report-generator
+npm i -D cypress-mochawesome-reporter
+```
+
+### ✅ Configuração do Cypress
+
+#### `cypress.config.ts`
+
+Adicione o reporter e o plugin:
+
+```ts
+import { defineConfig } from "cypress";
+
+export default defineConfig({
+  e2e: {
+    baseUrl: "https://testautomationpractice.blogspot.com",
+    setupNodeEvents(on, config) {
+      require("cypress-mochawesome-reporter/plugin")(on);
+      return config;
+    },
+  },
+
+  reporter: "cypress-mochawesome-reporter",
+  reporterOptions: {
+    reportDir: "cypress/reports/mochawesome",
+    overwrite: false,
+    html: false,
+    json: true,
+    embeddedScreenshots: true,
+    inlineAssets: true,
+  },
+});
+```
+
+#### `cypress/support/e2e.ts`
+
+Adicione o register do reporter:
+
+```ts
+import "cypress-mochawesome-reporter/register";
+```
+
+> Se você já tiver outros imports (ex.: drag-drop), mantenha todos no mesmo arquivo.
+
+---
+
+### ✅ Scripts no `package.json`
+
+Adicione estes scripts para **juntar os JSONs** e gerar **um HTML único**:
+
+```json
+{
+  "scripts": {
+    "cy:run": "cypress run",
+    "report:mocha:merge": "mochawesome-merge cypress/reports/mochawesome/*.json > cypress/reports/mochawesome/mochawesome.json",
+    "report:mocha:html": "marge cypress/reports/mochawesome/mochawesome.json -f mochawesome -o cypress/reports/mochawesome/html",
+    "report:mocha": "npm run report:mocha:merge && npm run report:mocha:html"
+  }
+}
+```
+
+---
+
+### ▶️ Gerando o relatório
+
+1) Rode os testes:
+
+```bash
+npm run cy:run
+```
+
+2) Gere o relatório HTML:
+
+```bash
+npm run report:mocha
+```
+
+O arquivo final ficará em:
+
+```
+cypress/reports/mochawesome/html/mochawesome.html
+```
+
+---
+
+### 📌 Recomendações
+
+Adicione a pasta de relatórios no `.gitignore`:
+
+```
+cypress/reports/
+```
 
 ---
 
@@ -141,3 +241,6 @@ Para corrigir, atualize o valor esperado no teste com o preço atual exibido na 
 ## 📌 Autor
 
 Projeto desenvolvido para fins de avaliação técnica e demonstração de automação com Cypress.
+---
+
+

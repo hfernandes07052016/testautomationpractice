@@ -1,10 +1,7 @@
 name: Cypress E2E Tests
 
 on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
   cypress-run:
@@ -25,10 +22,10 @@ jobs:
       - name: Run Cypress
         run: npm run cy:run
 
-      - name: Gerar Mochawesome report
+      - name: Gerar Relatório Mochawesome
         run: npm run report:mocha
 
-      - name: Upload Mochawesome report
+      - name: Upload do Relatório Gerado
         uses: actions/upload-artifact@v4
         with:
           name: mochawesome-report
